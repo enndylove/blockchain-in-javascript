@@ -16,7 +16,7 @@ git clone https://github.com/enndylove/blockchain-in-javascript.git
 ```
 2. Navigate to the project directory:
 ```shell
-cd src
+cd blockchain-in-javascript
 ```
 3. Install the required dependencies:
 ```shell
