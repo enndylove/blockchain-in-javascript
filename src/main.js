@@ -1,25 +1,72 @@
-const { Blockchain, Transactions } = require("./blockchain"); // Import the Blockchain and Transactions classes from the blockchain module
+/**
+ * Import the Blockchain and Transactions classes from the blockchain module.
+ */
+const { Blockchain, Transactions } = require("./blockchain");
 
-const EC = require('elliptic').ec; // Import the elliptic library for creating elliptic curve cryptography
-const ec = new EC('secp256k1'); // Create an instance of elliptic curve cryptography using the secp256k1 curve
+/**
+ * Import the elliptic library for creating elliptic curve cryptography.
+ */
+const EC = require('elliptic').ec;
 
-// Create a key pair from a private key
+/**
+ * Create an instance of elliptic curve cryptography using the secp256k1 curve.
+ */
+const ec = new EC('secp256k1');
+
+/**
+ * Create a key pair from a private key.
+ * @param {string} privateKey - The private key to create the key pair from.
+ * @returns {KeyPair} The created key pair.
+ */
 const myKey = ec.keyFromPrivate('b318061d2816e272de3bede908a754003e536bcafa200c0fe32126e3239445cd');
-const myWalletAddress = myKey.getPublic('hex'); // Get the public key in hexadecimal format
 
-let savjeeCoin = new Blockchain(); // Create a new instance of the Blockchain
+/**
+ * Get the public key in hexadecimal format.
+ * @returns {string} The public key in hexadecimal format.
+ */
+const myWalletAddress = myKey.getPublic('hex');
 
-// Create a new transaction and sign it with the private key
+/**
+ * Create a new instance of the Blockchain.
+ */
+let savjeeCoin = new Blockchain();
+
+/**
+ * Create a new transaction and sign it with the private key.
+ * @param {string} fromAddress - The address of the sender.
+ * @param {string} toAddress - The address of the recipient.
+ * @param {number} amount - The amount to be transferred.
+ */
 const tx1 = new Transactions(myWalletAddress, 'public key goes here', 10);
+
+/**
+ * Sign the transaction with the private key.
+ * @param {KeyPair} keyPair - The key pair to sign the transaction with.
+ */
 tx1.signTransaction(myKey);
-savjeeCoin.addTransaction(tx1); // Add the transaction to the blockchain
+
+/**
+ * Add the transaction to the blockchain.
+ * @param {Transaction} transaction - The transaction to be added.
+ */
+savjeeCoin.addTransaction(tx1);
 
 console.log("\nStarting the miner...");
-savjeeCoin.minePendingTransaction(myWalletAddress); // Mine pending transactions and reward the miner
 
-console.log("\nBalance of xavier is", savjeeCoin.getAddressOfBalance(myWalletAddress)); // Display the balance of the wallet
+/**
+ * Mine pending transactions and reward the miner.
+ * @param {string} minerAddress - The address of the miner.
+ */
+savjeeCoin.minePendingTransaction(myWalletAddress);
+
+console.log("\nBalance of xavier is", savjeeCoin.getAddressOfBalance(myWalletAddress));
 
 // Attempt to tamper with the blockchain
 savjeeCoin.chain[1].transactions[0].amount = 1;
 
-console.log('Is chain valid?', savjeeCoin.isChainValid()); // Check if the blockchain is valid
+console.log('Is chain valid?', savjeeCoin.isChainValid());
+
+/**
+ * Check if the blockchain is valid.
+ * @returns {boolean} True if the blockchain is valid, false otherwise.
+ */
